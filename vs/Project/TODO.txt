@@ -1,0 +1,17 @@
+TO DO - List : 
+
+
+1. When Screen = MainMenu play introMusic.ogg
+   When Screen = ingame play Rosolanc.ogg
+
+   //Clue
+   init different musics for each screen
+   try calling "Play(true);" function in the update function
+
+2. Implement ObjectPool for incoming enemies attacking the duck
+
+3. Customize Sprites for buttons in mainmenu
+
+4. Add a parallax background in the main menu (optional)
+
+5. Add a custom Font Style
