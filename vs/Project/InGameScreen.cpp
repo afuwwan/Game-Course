@@ -147,7 +147,7 @@ void Engine::InGameScreen::Init()
 
 #pragma endregion
 
-	music = (new Music("Rosolanc.ogg"))->SetVolume(70)->Play(true);
+	music = (new Music("Rosolanc.ogg"))->SetVolume(70);
 
 	//sound = (new Sound("jump.wav"))->SetVolume(100);
 	sound = (new Sound("marioJump.wav"))->SetVolume(30);
@@ -189,6 +189,13 @@ void Engine::InGameScreen::Update()
 
 
 	if (gstate == GameState::RUNNING) {
+
+		if (music->IsPlaying() == false)
+		{
+			music->Play(true);
+			music->IsPlaying() == true;
+
+		}
 
 #pragma region score
 
@@ -342,12 +349,16 @@ void Engine::InGameScreen::Update()
 
 		//deathSound->Play(true); //if enabled sound constantly running
 		music->Stop();
+		music->IsPlaying() == false;
+
 		text2->SetText("YOU DIED - Press J to Restart")->SetPosition(400, 500);
+
 		MoveLayer(backgrounds, 0.0f);
 		MoveLayer(middlegrounds, 0.0f);
 		MoveLayer(foregrounds, 0.0f);
 		//MoveLayer(front, 0.5f);
 		MoveLayer(front, 0.0f);
+
 		if (game->GetInputManager()->IsKeyPressed("Quit")) {
 			//state = State::EXIT;
 			game->SetState(State::EXIT);
@@ -365,9 +376,14 @@ void Engine::InGameScreen::Update()
 	{
 
 		music->Stop();
+		music->IsPlaying() == false;
+
+
 		restartGame();
 
 		music->Play(true);
+		music->IsPlaying() == true;
+
 		gstate = GameState::RUNNING;
 	}
 

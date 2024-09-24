@@ -43,11 +43,17 @@ void Engine::MainMenuScreen::Init()
 		->AddInputMapping("prev", SDLK_UP)
 		->AddInputMapping("press", SDLK_RETURN);
 
+	music = (new Music("Rosolanc.ogg"))->SetVolume(70)->Stop();
+	music2 = (new Music("UnderTheSea.ogg"))->SetVolume(70)->Play(true);
+
+
 }
 
 
 void Engine::MainMenuScreen::Update()
 {
+	
+	music->Stop();
 	// Set background
 	game->SetBackgroundColor(52, 155, 235);
 

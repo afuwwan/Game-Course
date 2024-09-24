@@ -8,6 +8,7 @@
 #include "Sprite.h"
 #include "Button.h"
 #include "Text.h"
+#include "Music.h"
 #include <vector>
 #include "ScreenManager.h"
 
@@ -24,6 +25,10 @@ namespace Engine {
 		vector<Button*> buttons;
 		Text* text;
 		int currentButtonIndex = 0;
+
+		Music* music = NULL;
+		Music* music2 = NULL;
+
 	};
 }
 
