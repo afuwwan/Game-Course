@@ -32,33 +32,6 @@ void Engine::DinoReal::Update()
 {
 	Engine::ScreenManager::GetInstance(this)->Update();
 
-	//auto currentScreen = Engine::ScreenManager::GetInstance(this)->GetCurrentScreen();
-
-	//0B4A77D0 mainmenu
-	//0B108098 ingame
-
-	//auto currentScreen = Engine::ScreenManager::GetInstance(this)->GetCurrentScreen();
-	/*if (currentScreen && currentScreen->GetName() == "mainmenu") {
-		music->Stop();
-	}*/
-
-	//if (currentScreen && "mainmenu")
-	//{
-	//	//introMusic->Play(true);
-	//	music->Stop();
-	//}	
-	//if (currentScreen && "ingame")
-	//{
-	//	//introMusic->Stop();
-	//	music->Play(true);
-	//}
-
-	//if (Engine::ScreenManager::GetInstance(this)->SetCurrentScreen("ingame"))
-	//{
-	//	//introMusic->Stop();
-	//	music->Play(true);
-	//}
-
 }
 
 

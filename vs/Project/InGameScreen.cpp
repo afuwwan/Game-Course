@@ -68,7 +68,7 @@ void Engine::InGameScreen::Init()
 		->AddInputMapping("press", SDLK_RETURN);
 	/*->AddInputMapping("press", SDLK_k);*/ //remove input mapping
 
-	//test commit
+
 
 #pragma endregion
 
@@ -91,34 +91,6 @@ void Engine::InGameScreen::Init()
 #pragma endregion
 
 #pragma region init spriteSheet
-	//texture = new Texture("gokuWalking3.png");
-	//sprite = new Sprite(texture, defaultSpriteShader, defaultQuad);
-	//sprite->SetNumXFrames(8)
-	//	  ->SetNumYFrames(1)
-	//	  ->AddAnimation("walk", 0, 7)
-	//	  ->SetScale(4)
-	//	  ->SetAnimationDuration(100)
-	//	  ->SetPosition(50, 0)
-	//	  ->PlayAnim("walk");
-
-	//texture = new Texture("SteamMan.png");
-	//sprite = new Sprite(texture, defaultSpriteShader, defaultQuad); //mousepos);
-	//sprite->SetNumXFrames(6)
-	//	->SetNumYFrames(2)
-	//	->AddAnimation("idle", 0, 5)
-	//	->AddAnimation("walk", 6, 11)
-	//	->SetScale(5)
-	//	->SetAnimationDuration(100)
-	//	->SetPosition(50, 100);
-	//
-	//texture2 = new Texture("SteamMan2.png");
-	//sprite2 = new Sprite(texture2, defaultSpriteShader, defaultQuad);
-	//sprite2->SetNumXFrames(6)
-	//	->SetNumYFrames(1)
-	//	->AddAnimation("walk", 0, 6)
-	//	->SetScale(5)
-	//	->SetAnimationDuration(100)
-	//	->SetPosition(50, 100);	
 
 	texture = new Texture("duck.png");
 	sprite = new Sprite(texture, game->GetDefaultSpriteShader(), game->GetDefaultQuad());
@@ -129,34 +101,11 @@ void Engine::InGameScreen::Init()
 		->SetScale(5)
 		->SetAnimationDuration(100)
 		->SetPosition(50, 100)
-		->SetBoundingBoxSize(150, 100);//
+		->SetBoundingBoxSize(150, 100);
 
 #pragma endregion
 
 #pragma region obstacle
-
-	//tx_obstacle = new Texture("goku.png");
-	//sp_obstacle = new Sprite(tx_obstacle, defaultSpriteShader, defaultQuad);
-	//sp_obstacle->SetNumXFrames(4)
-	//		   ->SetNumYFrames(1)
-	//		   ->AddAnimation("walk", 0, 3)
-	//	       ->SetScale(2)
-	//		   ->SetPosition(2000, 198)
-	//	       ->SetAnimationDuration(90)
-	//	       ->SetBoundingBoxSize(200,100)
-	//		   ->PlayAnim("walk")
-	//		   ->SetWireframe(false);	
-	//
-	//sp_obstacle2 = new Sprite(tx_obstacle, defaultSpriteShader, defaultQuad);
-	//sp_obstacle2->SetNumXFrames(4)
-	//		   ->SetNumYFrames(1)
-	//		   ->AddAnimation("walk", 0, 3)
-	//	       ->SetScale(2)           
-	//		   ->SetPosition(3000, 198)
-	//	       ->SetAnimationDuration(90)
-	//	       ->SetBoundingBoxSize(200,100)
-	//		   ->PlayAnim("walk")
-	//		   ->SetWireframe(false);
 
 
 	Texture* platformTexture = new Texture("rock.png");
@@ -333,70 +282,9 @@ void Engine::InGameScreen::Update()
 
 #pragma region mousepos
 
-		//vec2 mousepos = inputManager->GetMouseCoords();
-
-		//glm::vec2 screenCenter(w / 2.f, h / 2.f);
-
-		//glm::vec2 mouseDirection = mousepos - screenCenter;
-
-	  /*glm::vec2 mousepos;
-
-		if (glm::length(mousepos) == 0.f)
-		{
-			mousepos = { 1,0 };
-		}
-		else
-		{
-			mousepos = normalize(mousepos);
-		}
-
-		float spriteAngle = atan2(mousepos.y, -mousepos.x);*/ // spaceshipangle and atan2 not set
-
 #pragma endregion
 
 #pragma region obstacle handling
-
-		// TO DO : 
-		// when sprite hits obstacle x value is constantly subtracted by velocity (if needed)
-
-		//if (sp_obstacle->GetBoundingBox()->CollideWith(sprite->GetBoundingBox())) 
-		//{
-		//	//revert x position if collided
-		//	//x = oldMonsterPos.x;
-		//	//sprite->SetPosition(x, y);
-		//	state = State::EXIT;
-		//	return;
-
-		//	std::cout << "YOU GOT HIT BY GOKU" << std::endl;
-		//	//break;
-		//}	
-		//
-		//if (sp_obstacle2->GetBoundingBox()->CollideWith(sprite->GetBoundingBox())) 
-		//{
-		//	//revert x position if collided
-		//	//x = oldMonsterPos.x;
-		//	//sprite->SetPosition(x, y);
-		//	state = State::EXIT;
-		//	return;
-
-		//	std::cout << "YOU GOT HIT BY GOKU" << std::endl;
-		//	//break;
-		//}
-
-				//
-		/*for (Sprite* s : platforms) {
-			if (s->GetBoundingBox()->CollideWith(sprite->GetBoundingBox())) { // mengexek apakah di tercollision dengan sprite monster
-				//revert y position if collided
-				y = oldMonsterPos.y;
-				sprite->SetPosition(x, y);
-
-				//and set jump to false and yVelovity to 0
-				yVelocity = 0;
-				jump = false;
-				break;
-			}
-		}*/
-		//
 
 		// when sprite hit an obstacle the sate switch to game over
 		for (Sprite* s : platforms) {

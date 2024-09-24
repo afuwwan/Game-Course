@@ -24,7 +24,7 @@
 
 namespace Engine {
 	class DinoReal :
-		public Engine::Game/*, public Engine::Screen*/
+		public Engine::Game
 	{
 	public:
 		enum class GameState {
@@ -43,8 +43,8 @@ namespace Engine {
 		// void GenerateNewSprite();
 	private:
 
-		vector<Button*> buttons;//
-		int currentButtonIndex = 0;//
+		vector<Button*> buttons;
+		int currentButtonIndex = 0;
 
 		int score;
 		int lastTime;
@@ -72,8 +72,7 @@ namespace Engine {
 		Engine::Texture* tx_obstacle = NULL;
 		Engine::Sprite* sp_obstacle = NULL;
 		Engine::Sprite* sp_obstacle2 = NULL;
-		//std::vector<Sprite*> platforms;
-		//vector<Sprite*> platforms;
+
 
 
 		float yVelocity = 0, gravity = 0;
@@ -85,14 +84,9 @@ namespace Engine {
 
 		vector<Sprite*> backgrounds, middlegrounds, foregrounds, front;
 
-		//void MoveLayer(vector<Sprite*>& bg, float speed);
-		//void DrawLayer(vector<Sprite*>& bg);
-		//void AddToLayer(vector<Sprite*>& bg, string name);
 		float offset = 4;
 
-		//Input* mousepos = NULL;
-
-		bool gameOver = false;//
+		bool gameOver = false;
 
 
 	};
