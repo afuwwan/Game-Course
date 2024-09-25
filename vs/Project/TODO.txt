@@ -1,17 +1,11 @@
 TO DO - List : 
 
+1. Implement ObjectPool for incoming enemies attacking the duck
 
-1. When Screen = MainMenu play introMusic.ogg
-   When Screen = ingame play Rosolanc.ogg
+2. Customize Sprites for buttons in mainmenu
 
-   //Clue
-   init different musics for each screen
-   try calling "Play(true);" function in the update function
+3. Add a parallax background in the main menu (optional)
 
-2. Implement ObjectPool for incoming enemies attacking the duck
+4. Add a custom Font Style 
 
-3. Customize Sprites for buttons in mainmenu
-
-4. Add a parallax background in the main menu (optional)
-
-5. Add a custom Font Style
+5. when certain time hits change the obstacle into other ones (use SDL Ticks to track down the time)

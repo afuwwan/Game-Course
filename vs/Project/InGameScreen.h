@@ -77,6 +77,7 @@ namespace Engine {
 		bool jump = false, debug = false;
 
 		Music* music = NULL;
+		Music* music2 = NULL;
 		Sound* sound = NULL;
 		Sound* deathSound = NULL;
 

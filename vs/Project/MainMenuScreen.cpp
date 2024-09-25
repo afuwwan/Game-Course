@@ -43,8 +43,8 @@ void Engine::MainMenuScreen::Init()
 		->AddInputMapping("prev", SDLK_UP)
 		->AddInputMapping("press", SDLK_RETURN);
 
-	music = (new Music("Rosolanc.ogg"))->SetVolume(70)->Stop();
-	music2 = (new Music("UnderTheSea.ogg"))->SetVolume(70)->Play(true);
+	//music = (new Music("Rosolanc.ogg"))->SetVolume(70)->Stop();
+	music2 = (new Music("2021-08-16_-_8_Bit_Adventure_-_www.FesliyanStudios.com.ogg"))->SetVolume(30)->Play(true);
 
 
 }
@@ -53,9 +53,27 @@ void Engine::MainMenuScreen::Init()
 void Engine::MainMenuScreen::Update()
 {
 	
-	music->Stop();
+	//music->Stop();
+	//music2->Play(true);
+
+	//if (music2->IsPlaying() == false)
+	//{
+	//	music2->Play(true);
+	//	//music2->IsPlaying() == true;
+
+	//}
+
 	// Set background
 	game->SetBackgroundColor(52, 155, 235);
+
+	if (music2->IsPlaying() == true)
+	{
+		std::cout << "music 2 is playing" << std::endl;
+	}
+	else if (music2->IsPlaying() == false)
+	{
+		std::cout << "music 2 is not playing" << std::endl;
+	}
 
 	if (game->GetInputManager()->IsKeyReleased("next")) {
 		// Set previous button to normal state
@@ -82,6 +100,7 @@ void Engine::MainMenuScreen::Update()
 		// If play button then go to InGame, exit button then exit
 		if ("play" == b->GetButtonName()) {
 			ScreenManager::GetInstance(game)->SetCurrentScreen("ingame");
+			music2->Stop();
 		}
 		else if ("exit" == b->GetButtonName()) {
 			game->SetState(Engine::State::EXIT);

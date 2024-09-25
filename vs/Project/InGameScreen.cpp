@@ -36,9 +36,7 @@ void Engine::InGameScreen::Init()
 	//	Turtle* o = new Turtle(CreateSprite(texture));
 	//	objects.push_back(o);
 	//}
-
-	// Add input mappings
-	game->GetInputManager()->AddInputMapping("mainmenu", SDLK_ESCAPE);
+	
 
 #pragma region init background
 	Texture* bgTexture = new Texture("senja.png");//
@@ -68,6 +66,7 @@ void Engine::InGameScreen::Init()
 		->AddInputMapping("press", SDLK_RETURN);
 	/*->AddInputMapping("press", SDLK_k);*/ //remove input mapping
 
+	game->GetInputManager()->AddInputMapping("mainmenu", SDLK_ESCAPE);
 
 
 #pragma endregion
@@ -148,6 +147,7 @@ void Engine::InGameScreen::Init()
 #pragma endregion
 
 	music = (new Music("Rosolanc.ogg"))->SetVolume(70);
+	music2 = (new Music("2021-08-16_-_8_Bit_Adventure_-_www.FesliyanStudios.com.ogg"))->SetVolume(30);//
 
 	//sound = (new Sound("jump.wav"))->SetVolume(100);
 	sound = (new Sound("marioJump.wav"))->SetVolume(30);
@@ -168,6 +168,7 @@ void Engine::InGameScreen::Update()
 	// Back to main menu
 	if (game->GetInputManager()->IsKeyReleased("mainmenu")) {
 		ScreenManager::GetInstance(game)->SetCurrentScreen("mainmenu");
+		music->Stop();
 	}
 
 	//// Set background
@@ -197,6 +198,12 @@ void Engine::InGameScreen::Update()
 
 		}
 
+		if (game->GetInputManager()->IsKeyReleased("mainmenu")) {
+			ScreenManager::GetInstance(game)->SetCurrentScreen("mainmenu");
+			music->Stop();
+			music2->Play(true);
+		}
+
 #pragma region score
 
 		Uint32 currentTime = SDL_GetTicks();
@@ -220,6 +227,8 @@ void Engine::InGameScreen::Update()
 
 		sprite->Update(game->GetGameTime());
 		sprite->PlayAnim("walk");
+
+
 
 #pragma region Movement
 
@@ -296,6 +305,9 @@ void Engine::InGameScreen::Update()
 		// when sprite hit an obstacle the sate switch to game over
 		for (Sprite* s : platforms) {
 			if (s->GetBoundingBox()->CollideWith(sprite->GetBoundingBox())) {
+				
+				deathSound->Play(false);
+				deathSound->IsPlaying() == false;
 				gstate = GameState::GAME_OVER;
 				return;
 			}
@@ -346,10 +358,15 @@ void Engine::InGameScreen::Update()
 	}
 	else if (gstate == GameState::GAME_OVER)
 	{
-
+		//std::cout << "Game is at Game Over State" << std::endl;
 		//deathSound->Play(true); //if enabled sound constantly running
 		music->Stop();
 		music->IsPlaying() == false;
+
+		if (game->GetInputManager()->IsKeyReleased("mainmenu")) {
+			music2->Play(true);
+			ScreenManager::GetInstance(game)->SetCurrentScreen("mainmenu");
+		}//
 
 		text2->SetText("YOU DIED - Press J to Restart")->SetPosition(400, 500);
 
@@ -359,12 +376,6 @@ void Engine::InGameScreen::Update()
 		//MoveLayer(front, 0.5f);
 		MoveLayer(front, 0.0f);
 
-		if (game->GetInputManager()->IsKeyPressed("Quit")) {
-			//state = State::EXIT;
-			game->SetState(State::EXIT);
-			return;
-		}
-		//std::cout << "Game is at Game Over State" << std::endl;
 
 
 		if (game->GetInputManager()->IsKeyPressed("Reset")) {
@@ -377,7 +388,6 @@ void Engine::InGameScreen::Update()
 
 		music->Stop();
 		music->IsPlaying() == false;
-
 
 		restartGame();
 
