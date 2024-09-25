@@ -9,3 +9,5 @@ TO DO - List :
 4. Add a custom Font Style 
 
 5. when certain time hits change the obstacle into other ones (use SDL Ticks to track down the time)
+
+6. Add a sound effect when player switch and press buttons in main menu screen
