@@ -39,8 +39,10 @@ void Engine::InGameScreen::Init()
 	
 
 #pragma region init background
+
 	Texture* bgTexture = new Texture("senja.png");//
 	backgroundSprite = (new Sprite(bgTexture, game->GetDefaultSpriteShader(), game->GetDefaultQuad()))->SetSize((float)game->GetSettings()->screenWidth, (float)game->GetSettings()->screenHeight);//
+
 #pragma endregion
 
 #pragma region init inputManager
@@ -105,7 +107,7 @@ void Engine::InGameScreen::Init()
 
 #pragma endregion
 
-#pragma region obstacle
+#pragma region obstacle init
 
 
 	Texture* platformTexture = new Texture("rock.png");
@@ -118,7 +120,7 @@ void Engine::InGameScreen::Init()
 		platforms.push_back(platformSprite);
 	}
 
-
+	//debugging
 	dotTexture = new Texture("dot.png");
 	dotSprite1 = new Sprite(dotTexture, game->GetDefaultSpriteShader(), game->GetDefaultQuad());
 	dotSprite2 = new Sprite(dotTexture, game->GetDefaultSpriteShader(), game->GetDefaultQuad());
@@ -145,6 +147,8 @@ void Engine::InGameScreen::Init()
 
 #pragma endregion
 
+#pragma region sound init
+
 	music = (new Music("Rosolanc.ogg"))->SetVolume(70);
 	music2 = (new Music("2021-08-16_-_8_Bit_Adventure_-_www.FesliyanStudios.com.ogg"))->SetVolume(30);//
 
@@ -152,11 +156,17 @@ void Engine::InGameScreen::Init()
 	sound = (new Sound("marioJump.wav"))->SetVolume(30);
 	deathSound = (new Sound("oof.wav"))->SetVolume(30);
 
+#pragma endregion
+
+#pragma region text init
+
 	text = new Text("lucon.ttf", 24, game->GetDefaultTextShader());
 	text->SetScale(1.0f)->SetColor(255, 255, 255)->SetPosition(0, game->GetSettings()->screenHeight - (text->GetFontSize() * text->GetScale()));
 
 	text2 = new Text("lucon.ttf", 24, game->GetDefaultTextShader());//
 	text2->SetScale(2.0f)->SetColor(255, 255, 255)->SetPosition(0, game->GetSettings()->screenHeight - (text2->GetFontSize() * text2->GetScale()));//
+
+#pragma endregion
 
 	debug = false;
 
@@ -164,11 +174,6 @@ void Engine::InGameScreen::Init()
 
 void Engine::InGameScreen::Update()
 {
-	// Back to main menu
-	if (game->GetInputManager()->IsKeyReleased("mainmenu")) {
-		ScreenManager::GetInstance(game)->SetCurrentScreen("mainmenu");
-		music->Stop();
-	}
 
 	//// Set background
 	//game->SetBackgroundColor(235, 229, 52);
@@ -185,7 +190,11 @@ void Engine::InGameScreen::Update()
 	//// Count spawn duration
 	//spawnDuration += (game->GetGameTime());
 
-
+	// Back to main menu
+	if (game->GetInputManager()->IsKeyReleased("mainmenu")) {
+		ScreenManager::GetInstance(game)->SetCurrentScreen("mainmenu");
+		music->Stop();
+	}
 
 	//State when game is running
 	if (gstate == GameState::RUNNING) {
@@ -291,8 +300,6 @@ void Engine::InGameScreen::Update()
 
 #pragma endregion
 
-
-
 #pragma region mousepos
 
 #pragma endregion
@@ -317,13 +324,14 @@ void Engine::InGameScreen::Update()
 			float y_ = 198;
 			float velocity;
 
+			//every 10 seconds obstacle speeds up by 0.1f
 			float baseVelocity = 0.7f; //nilai awal kecepatan
 			float increment = 0.1f; // nilai untuk increment kecepatan tiap kelipatan 10 pada score
 
 			//nilai untuk menetukan tiap kelipatan berapa nilai velocity bertambah
 			int range = score / 10; //nilai integer = 0 jika menghasilkan nilai float
 
-			velocity = baseVelocity + (range * increment);
+			velocity = baseVelocity + (range * increment);               
 			//kecepatan = nilai awal kecepatan + (nilai score tiap kelipatan 10 * nilai increment)
 
 			// Apply velocity changes
@@ -334,6 +342,42 @@ void Engine::InGameScreen::Update()
 			
 			//Debug
 			std::cout << "Speed : " << velocity << std::endl;
+
+			//versi panjang
+			/*if (score >= 0 && score <= 10)
+			{
+				velocity = 0.7f;
+				x_ -= velocity * game->getgametime();
+				movelayer(front, velocity);
+				std::cout << "speed : " << velocity << std::endl;
+				//return;
+
+			}
+
+			if (score > 10 && score <= 20)
+			{
+				velocity = 0.8f;
+				x_ -= velocity * game->getgametime();
+				movelayer(front, velocity);
+				std::cout << "speed : " << velocity << std::endl;
+			}
+
+			if (score > 20 && score <= 30)
+			{
+				velocity = 0.9f;
+				x_ -= velocity * game->getgametime();
+				movelayer(front, velocity);
+				std::cout << "speed : " << velocity << std::endl;
+			}
+
+			if (score > 30)
+			{
+				velocity = 1.0f;
+				x_ -= velocity * game->getgametime();
+				movelayer(front, velocity);
+				std::cout << "speed : " << velocity << std::endl;
+			}*/
+
 			
 			s->SetFlipHorizontal(true)
 				->SetPosition(x_, y_)->Update(game->GetGameTime());
@@ -373,41 +417,50 @@ void Engine::InGameScreen::Update()
 		//MoveLayer(front, 0.7f);
 
 	}
-	else if (gstate == GameState::GAME_OVER)
+	else if (gstate == GameState::GAME_OVER) // state if player hits the obstacle
 	{		
+		//Stops the bg music
 		music->Stop();
 		music->IsPlaying() == false;
 
+		//sets input manager for handling
 		if (game->GetInputManager()->IsKeyReleased("mainmenu")) {
 			music2->Play(true);
 			ScreenManager::GetInstance(game)->SetCurrentScreen("mainmenu");
 		}//
 
+		//output text to inform that the character is dead
 		text2->SetText("YOU DIED - Press J to Restart")->SetPosition(400, 500);
 
+		//sets the parallax background speed to 0
 		MoveLayer(backgrounds, 0.0f);
 		MoveLayer(middlegrounds, 0.0f);
 		MoveLayer(foregrounds, 0.0f);
 		MoveLayer(front, 0.0f);
 
+		//input manager if user press "J"
 		if (game->GetInputManager()->IsKeyPressed("Reset")) {
 			gstate = GameState::RESET;
 		}
 
 	}
-	else if (gstate == GameState::RESET)
+	else if (gstate == GameState::RESET)//if user pressed J and decided to continue the game
 	{
-
+		//make sure to stop the music 
 		music->Stop();
 		music->IsPlaying() == false;
 
+		//resets all variables involved
 		restartGame();
 
+		//play the bg music 
 		music->Play(true);
 		music->IsPlaying() == true;
 
+		//sets the game state to running
 		gstate = GameState::RUNNING;
 	}
+
 
 }
 
