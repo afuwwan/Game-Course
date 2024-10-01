@@ -45,6 +45,8 @@ void Engine::InGameScreen::Init()
 
 #pragma region init inputManager
 
+	game->GetInputManager()->AddInputMapping("mainmenu", SDLK_ESCAPE);
+
 	game->GetInputManager()->AddInputMapping("Move Right", SDLK_RIGHT)
 		->AddInputMapping("Move Left", SDLK_LEFT)
 		->AddInputMapping("Move Up", SDLK_UP)
@@ -66,7 +68,6 @@ void Engine::InGameScreen::Init()
 		->AddInputMapping("press", SDLK_RETURN);
 	/*->AddInputMapping("press", SDLK_k);*/ //remove input mapping
 
-	game->GetInputManager()->AddInputMapping("mainmenu", SDLK_ESCAPE);
 
 
 #pragma endregion
@@ -125,9 +126,6 @@ void Engine::InGameScreen::Init()
 	dotSprite4 = new Sprite(dotTexture, game->GetDefaultSpriteShader(), game->GetDefaultQuad());
 
 
-	lastSpriteTime = SDL_GetTicks();
-
-
 
 #pragma endregion
 
@@ -142,6 +140,7 @@ void Engine::InGameScreen::Init()
 	score = 0;
 	Uint32 lastTime = 0;  // Store the last time the score was updated
 
+	//Debug
 	std::string died = "You Died";
 
 #pragma endregion
@@ -151,7 +150,7 @@ void Engine::InGameScreen::Init()
 
 	//sound = (new Sound("jump.wav"))->SetVolume(100);
 	sound = (new Sound("marioJump.wav"))->SetVolume(30);
-	deathSound = (new Sound("oof.ogg"))->SetVolume(30);
+	deathSound = (new Sound("oof.wav"))->SetVolume(30);
 
 	text = new Text("lucon.ttf", 24, game->GetDefaultTextShader());
 	text->SetScale(1.0f)->SetColor(255, 255, 255)->SetPosition(0, game->GetSettings()->screenHeight - (text->GetFontSize() * text->GetScale()));
@@ -188,7 +187,7 @@ void Engine::InGameScreen::Update()
 
 
 
-
+	//State when game is running
 	if (gstate == GameState::RUNNING) {
 
 		if (music->IsPlaying() == false)
@@ -203,6 +202,9 @@ void Engine::InGameScreen::Update()
 			music->Stop();
 			music2->Play(true);
 		}
+
+		sprite->Update(game->GetGameTime());
+		sprite->PlayAnim("walk");
 
 #pragma region score
 
@@ -221,14 +223,7 @@ void Engine::InGameScreen::Update()
 		text->SetText("Score: " + std::to_string(score))
 			->SetPosition(1450, 850);
 
-
-
 #pragma endregion
-
-		sprite->Update(game->GetGameTime());
-		sprite->PlayAnim("walk");
-
-
 
 #pragma region Movement
 
@@ -287,14 +282,16 @@ void Engine::InGameScreen::Update()
 		y += yVelocity * game->GetGameTime();
 		sprite->SetPosition(x, y);
 
-#pragma endregion
-
 		//jika posisi sprite di pinggir layar maka sprite tidak bisa melewati batas kiri layar
 		if (x <= 0)
 		{
 			x = 0;
 			sprite->SetPosition(x, y);
 		}
+
+#pragma endregion
+
+
 
 #pragma region mousepos
 
@@ -318,15 +315,35 @@ void Engine::InGameScreen::Update()
 
 			float x_ = s->GetPosition().x;
 			float y_ = 198;
-			float velocity = 0.7f;
+			float velocity;
 
+			float baseVelocity = 0.7f; //nilai awal kecepatan
+			float increment = 0.1f; // nilai untuk increment kecepatan tiap kelipatan 10 pada score
+
+			//nilai untuk menetukan tiap kelipatan berapa nilai velocity bertambah
+			int range = score / 10; //nilai integer = 0 jika menghasilkan nilai float
+
+			velocity = baseVelocity + (range * increment);
+			//kecepatan = nilai awal kecepatan + (nilai score tiap kelipatan 10 * nilai increment)
+
+			// Apply velocity changes
 			x_ -= velocity * game->GetGameTime();
+			
+			// makes parallax speed based on velocity
+			MoveLayer(front, velocity);
+			
+			//Debug
+			std::cout << "Speed : " << velocity << std::endl;
+			
 			s->SetFlipHorizontal(true)
 				->SetPosition(x_, y_)->Update(game->GetGameTime());
 
+			//Debug
 			std::cout << "The Value of x_ is : " << std::endl;
 			std::cout << to_string(x) << std::endl;
 
+
+			//Relocate obstacle position when its out of viewport
 			if (x_ <= -200)
 			{
 				s->SetPosition(2000, 198);
@@ -353,13 +370,11 @@ void Engine::InGameScreen::Update()
 		MoveLayer(backgrounds, 0.005f);
 		MoveLayer(middlegrounds, 0.03f);
 		MoveLayer(foregrounds, 0.5f);
-		MoveLayer(front, 0.7f);
+		//MoveLayer(front, 0.7f);
 
 	}
 	else if (gstate == GameState::GAME_OVER)
-	{
-		//std::cout << "Game is at Game Over State" << std::endl;
-		//deathSound->Play(true); //if enabled sound constantly running
+	{		
 		music->Stop();
 		music->IsPlaying() == false;
 
@@ -373,10 +388,7 @@ void Engine::InGameScreen::Update()
 		MoveLayer(backgrounds, 0.0f);
 		MoveLayer(middlegrounds, 0.0f);
 		MoveLayer(foregrounds, 0.0f);
-		//MoveLayer(front, 0.5f);
 		MoveLayer(front, 0.0f);
-
-
 
 		if (game->GetInputManager()->IsKeyPressed("Reset")) {
 			gstate = GameState::RESET;

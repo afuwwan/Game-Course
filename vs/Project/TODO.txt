@@ -11,3 +11,21 @@ TO DO - List :
 5. when certain time hits change the obstacle into other ones (use SDL Ticks to track down the time)
 
 6. Add a sound effect when player switch and press buttons in main menu screen
+
+
+/////List above is optional if you want to/////
+
+Stuff added : 
+
+- Main menuscreen now have background
+- obstacle speeds up every 10 seconds
+
+Fixes : 
+
+- Fixed Deathsound plays 1 second late
+
+Notes* 
+
+- Game is sorta finished for functional wise, but if any addition is wanted just feel free to modify.
+- Basically the game counts your score based on how many seconds you survive avoiding the rocks
+  and it get much faster every 10 seconds. thats all

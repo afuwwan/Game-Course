@@ -26,6 +26,7 @@ namespace Engine {
 		Text* text;
 		int currentButtonIndex = 0;
 
+		Engine::Sprite* backgroundSprite = NULL;
 		Music* music = NULL;
 		Music* music2 = NULL;
 

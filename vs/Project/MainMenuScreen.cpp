@@ -7,6 +7,11 @@ Engine::MainMenuScreen::MainMenuScreen()
 
 void Engine::MainMenuScreen::Init()
 {
+	
+	Texture* bgTexture = new Texture("senja.png");//
+	backgroundSprite = (new Sprite(bgTexture, game->GetDefaultSpriteShader(), game->GetDefaultQuad()))->SetSize((float)game->GetSettings()->screenWidth, (float)game->GetSettings()->screenHeight);//
+
+	
 	// Create a Texture
 	Texture* texture = new Texture("buttons.png");
 
@@ -36,7 +41,7 @@ void Engine::MainMenuScreen::Init()
 
 	// Create Text
 	text = (new Text("8-bit Arcade In.ttf", 100, game->GetDefaultTextShader()))
-		->SetText("The Spawning Turtle")->SetPosition(game->GetSettings()->screenWidth * 0.5f - 500, game->GetSettings()->screenHeight - 100.0f)->SetColor(235, 229, 52);
+		->SetText("DUCK ON A CART")->SetPosition(game->GetSettings()->screenWidth * 0.5f - 300, game->GetSettings()->screenHeight - 100.0f)->SetColor(255, 255, 255);
 
 	// Add input mappings
 	game->GetInputManager()->AddInputMapping("next", SDLK_DOWN)
@@ -66,6 +71,7 @@ void Engine::MainMenuScreen::Update()
 	// Set background
 	game->SetBackgroundColor(52, 155, 235);
 
+	//Debug
 	if (music2->IsPlaying() == true)
 	{
 		std::cout << "music 2 is playing" << std::endl;
@@ -75,6 +81,7 @@ void Engine::MainMenuScreen::Update()
 		std::cout << "music 2 is not playing" << std::endl;
 	}
 
+	//Button States
 	if (game->GetInputManager()->IsKeyReleased("next")) {
 		// Set previous button to normal state
 		buttons[currentButtonIndex]->SetButtonState(Engine::ButtonState::NORMAL);
@@ -116,6 +123,9 @@ void Engine::MainMenuScreen::Update()
 
 void Engine::MainMenuScreen::Draw()
 {
+	
+	backgroundSprite->Draw();
+	
 	// Render all buttons
 	for (Button* b : buttons) {
 		b->Draw();
