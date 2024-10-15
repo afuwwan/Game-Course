@@ -23,7 +23,7 @@ namespace Engine {
 		void PressKey(unsigned int keyID);
 		void ReleaseKey(unsigned int keyID);
 		void SetMouseCoords(float x, float y);
-		void OpenGameController();
+		void OpenGameController();//Koneksi ke gamepad device
 		void CloseGameController();
 		Engine::Input* AddInputMapping(string mappingName, unsigned int keyId);
 		void Reset();

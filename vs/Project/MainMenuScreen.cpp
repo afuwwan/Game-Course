@@ -17,12 +17,20 @@ void Engine::MainMenuScreen::Init()
 
 	// Create Sprites
 	Sprite* playSprite = (new Sprite(texture, game->GetDefaultSpriteShader(), game->GetDefaultQuad()))
-		->SetNumXFrames(6)->SetNumYFrames(1)->AddAnimation("normal", 5, 5)->AddAnimation("hover", 3, 4)
-		->AddAnimation("press", 3, 4)->SetAnimationDuration(400);
+		->SetNumXFrames(6)
+		->SetNumYFrames(1)
+		->AddAnimation("normal", 5, 5)
+		->AddAnimation("hover", 3, 4)
+		->AddAnimation("press", 3, 4)
+		->SetAnimationDuration(400);
 
 	Sprite* exitSprite = (new Sprite(texture, game->GetDefaultSpriteShader(), game->GetDefaultQuad()))
-		->SetNumXFrames(6)->SetNumYFrames(1)->AddAnimation("normal", 2, 2)->AddAnimation("hover", 0, 1)
-		->AddAnimation("press", 0, 1)->SetAnimationDuration(400);
+		->SetNumXFrames(6)
+		->SetNumYFrames(1)
+		->AddAnimation("normal", 2, 2)
+		->AddAnimation("hover", 0, 1)
+		->AddAnimation("press", 0, 1)
+		->SetAnimationDuration(400);
 
 	//Create Buttons
 	Button* playButton = new Button(playSprite, "play");
@@ -47,6 +55,8 @@ void Engine::MainMenuScreen::Init()
 	game->GetInputManager()->AddInputMapping("next", SDLK_DOWN)
 		->AddInputMapping("prev", SDLK_UP)
 		->AddInputMapping("press", SDLK_RETURN);
+
+	//SDL_CONTROLLER
 
 	//music = (new Music("Rosolanc.ogg"))->SetVolume(70)->Stop();
 	music2 = (new Music("2021-08-16_-_8_Bit_Adventure_-_www.FesliyanStudios.com.ogg"))->SetVolume(30)->Play(true);
